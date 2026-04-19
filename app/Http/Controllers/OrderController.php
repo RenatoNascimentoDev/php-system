@@ -30,7 +30,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('orders.create');
     }
 
     /**
@@ -38,7 +38,21 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'description' => ['required', 'string', 'max:255'],
+            'customer_name' => ['required', 'string', 'max:255'],
+            'product' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'quantity' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $data['total'] = (float) $data['price'] * (int) $data['quantity'];
+
+        Order::create($data);
+
+        return redirect()
+            ->route('orders.index')
+            ->with('success', 'Pedido cadastrado com sucesso!');
     }
 
     /**
@@ -54,7 +68,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        return view('orders.edit', compact('order'));
     }
 
     /**
@@ -62,7 +76,21 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $data = $request->validate([
+            'description' => ['required', 'string', 'max:255'],
+            'customer_name' => ['required', 'string', 'max:255'],
+            'product' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'quantity' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $data['total'] = (float) $data['price'] * (int) $data['quantity'];
+
+        $order->update($data);
+
+        return redirect()
+            ->route('orders.index')
+            ->with('success', 'Pedido atualizado com sucesso!');
     }
 
     /**
@@ -70,6 +98,10 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+
+        return redirect()
+            ->route('orders.index')
+            ->with('success', 'Pedido removido com sucesso!');
     }
 }
