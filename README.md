@@ -1,58 +1,149 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema web para gestão de pedidos e transportadoras de uma loja de informática, com foco em controle operacional, visão gerencial e integração por API.
 
-## About Laravel
+A aplicação permite cadastrar, consultar, editar e remover pedidos e transportadoras, acompanhar indicadores do negócio no dashboard, exportar pedidos em CSV e consumir dados por meio de uma API documentada.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Visão Geral
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O PHP System foi desenvolvido para centralizar a operação comercial de uma loja de informática, organizando o fluxo de pedidos e o relacionamento com transportadoras responsáveis pela entrega.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+O sistema oferece uma interface administrativa simples e objetiva, baseada em AdminLTE, além de recursos que apoiam tanto o uso interno da equipe quanto integrações futuras com outros sistemas por meio de API.
 
-## Learning Laravel
+## Principais Módulos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Dashboard
+- Pedidos
+- Transportadoras
+- API de pedidos
+- Documentação da API
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requisitos Funcionais
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Dashboard
+- Exibir o total de pedidos cadastrados.
+- Exibir o total vendido em reais.
+- Apresentar os indicadores principais da operação de forma visual.
 
-## Agentic Development
+### Pedidos
+- Permitir cadastrar pedidos.
+- Permitir listar pedidos.
+- Permitir editar pedidos existentes.
+- Permitir excluir pedidos.
+- Permitir buscar pedidos por nome do cliente.
+- Permitir paginação de 10 registros por página.
+- Permitir exportar os pedidos em arquivo CSV.
+- Calcular automaticamente o valor total do pedido com base em preço e quantidade.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Transportadoras
+- Permitir cadastrar transportadoras.
+- Permitir listar transportadoras.
+- Permitir editar transportadoras existentes.
+- Permitir excluir transportadoras.
+- Permitir preenchimento automático de endereço a partir do CEP.
+- Consultar dados de endereço utilizando a API ViaCEP.
 
-```bash
-composer require laravel/boost --dev
+### API
+- Disponibilizar endpoint para listar pedidos.
+- Disponibilizar endpoint para consultar um pedido por ID.
+- Disponibilizar endpoint para cadastrar novos pedidos.
+- Disponibilizar documentação navegável da API.
 
-php artisan boost:install
-```
+## Requisitos Não Funcionais
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+- Interface administrativa baseada em AdminLTE.
+- Aplicação desenvolvida com PHP e Laravel.
+- Persistência de dados em banco relacional.
+- Paginação com navegação consistente na interface.
+- Respostas da API em JSON.
+- Documentação OpenAPI gerada automaticamente.
+- Estrutura organizada para evolução futura da aplicação.
+- Código preparado para manutenção e expansão de funcionalidades.
 
-## Contributing
+## Regras de Negócio
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- O total do pedido deve ser calculado automaticamente com base em `preço x quantidade`.
+- O preço do pedido não pode ser negativo.
+- A quantidade do pedido deve ser no mínimo 1.
+- O nome do cliente é obrigatório no cadastro do pedido.
+- A descrição do pedido é obrigatória.
+- O produto do pedido é obrigatório.
+- O cadastro de transportadora exige nome, CNPJ e endereço.
+- O CNPJ da transportadora deve ser único.
+- O CEP deve ser utilizado para apoiar o preenchimento automático do endereço.
+- O estado da transportadora deve ser armazenado com sigla de 2 caracteres.
+- A listagem de pedidos deve manter paginação de 10 itens por página.
+- A exportação CSV deve considerar os pedidos cadastrados no sistema.
 
-## Code of Conduct
+## Tecnologias Utilizadas
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP 8
+- Laravel
+- MySQL
+- AdminLTE
+- JavaScript
+- ViaCEP
+- Scramble
+- Scalar
 
-## Security Vulnerabilities
+## API e Documentação
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+A aplicação possui uma API para consumo dos dados de pedidos.
 
-## License
+### Endpoints disponíveis
+- `GET /api/orders`
+- `GET /api/orders/{order}`
+- `POST /api/orders`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Documentação
+- `GET /docs/api`
+- `GET /docs/api.json`
+- `GET /scalar`
+
+## Funcionalidades Já Implementadas
+
+- Dashboard com total de pedidos.
+- Dashboard com total vendido.
+- CRUD de pedidos.
+- Busca de pedidos por nome do cliente.
+- Paginação de pedidos com 10 registros por página.
+- Exportação de pedidos em CSV.
+- CRUD de transportadoras.
+- Integração com ViaCEP para preenchimento automático de endereço.
+- Campo de CEP com máscara e busca manual por ícone de pesquisa.
+- API para listagem, consulta por ID e criação de pedidos.
+- Documentação automática da API com Scramble.
+- Visualização moderna da referência da API com Scalar.
+- Seeders e factories para geração de dados fictícios.
+
+## Melhorias Planejadas
+
+- Exibir o total do pedido de forma automática também no formulário, em tempo real.
+- Padronizar a experiência de busca por CEP também na edição de transportadoras.
+- Criar páginas de visualização detalhada para pedidos e transportadoras.
+- Adicionar autenticação e controle de acesso ao painel administrativo.
+- Adicionar filtros mais avançados para pedidos e transportadoras.
+- Criar testes automatizados para fluxos críticos da aplicação.
+- Melhorar mensagens de feedback e validação para o usuário final.
+- Evoluir a API com versionamento e recursos adicionais.
+- Preparar o sistema para integração com novos módulos operacionais.
+
+## Estrutura do Sistema
+
+### Dashboard
+Painel inicial com visão consolidada da operação, exibindo indicadores principais do negócio.
+
+### Pedidos
+Módulo responsável por gerenciar os pedidos da loja, desde o cadastro até a exportação dos dados.
+
+### Transportadoras
+Módulo responsável pelo cadastro e manutenção das transportadoras, incluindo preenchimento automático de endereço via CEP.
+
+### API
+Camada de integração para consumo externo dos pedidos, com documentação gerada automaticamente.
+
+## Objetivo do Sistema
+
+O PHP System foi pensado para apoiar a operação de uma loja de informática de forma simples, clara e escalável, centralizando o controle de pedidos, transportadoras e indicadores de negócio em um único ambiente.
+
+A proposta do sistema é reduzir retrabalho, organizar informações operacionais e facilitar tanto o uso interno quanto futuras integrações com outros serviços.
