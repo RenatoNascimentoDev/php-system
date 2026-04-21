@@ -33,18 +33,34 @@
                 </div>
 
                 <div class="form-group">
-                    <label>CEP</label>
-                    <input
-                        type="text"
-                        name="cep"
-                        id="cep"
-                        class="form-control"
-                        value="{{ old('cep') }}"
-                        placeholder="00000-000"
-                        required
-                    >
-                    <small class="form-text text-muted">Ao sair do campo, buscamos o endereço no ViaCEP.</small>
+    <label>CEP</label>
+
+            <div class="input-group">
+                <input
+                    type="text"
+                    name="cep"
+                    id="cep"
+                    class="form-control"
+                    value="{{ old('cep') }}"
+                    placeholder="00000-000"
+                    maxlength="9"
+                    inputmode="numeric"
+                    autocomplete="postal-code"
+                    required
+                >
+
+                <div class="input-group-append">
+                    <button type="button" id="search-cep" class="btn btn-outline-secondary">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
+            </div>
+
+    <small class="form-text text-muted">
+        Digite o CEP e clique na lupa para buscar o endereço.
+    </small>
+</div>
+
 
                 <div class="form-group">
                     <label>Estado (UF)</label>
@@ -87,12 +103,23 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const cepInput = document.getElementById('cep');
+    const searchCepButton = document.getElementById('search-cep');
 
-    cepInput.addEventListener('blur', async () => {
-        const raw = cepInput.value || '';
-        const cep = raw.replace(/\D/g, '');
+    function formatCep(value) {
+        const digits = value.replace(/\D/g, '').slice(0, 8);
+
+        if (digits.length <= 5) {
+            return digits;
+        }
+
+        return digits.slice(0, 5) + '-' + digits.slice(5);
+    }
+
+    async function fetchCep() {
+        const cep = cepInput.value.replace(/\D/g, '');
 
         if (cep.length !== 8) {
+            alert('Digite um CEP válido com 8 números.');
             return;
         }
 
@@ -111,6 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('street').value = data.logradouro || '';
         } catch (e) {
             alert('Falha ao consultar o ViaCEP. Tente novamente.');
+        }
+    }
+
+    cepInput.addEventListener('input', () => {
+        cepInput.value = formatCep(cepInput.value);
+    });
+
+    searchCepButton.addEventListener('click', fetchCep);
+
+    cepInput.addEventListener('blur', () => {
+        const cep = cepInput.value.replace(/\D/g, '');
+
+        if (cep.length === 8) {
+            fetchCep();
         }
     });
 });
