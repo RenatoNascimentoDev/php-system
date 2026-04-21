@@ -11,5 +11,9 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+
+Route::get('/orders-export-csv', [OrderController::class, 'exportCsv'])
+    ->name('orders.export');
+
 Route::resource('orders', OrderController::class);
 Route::resource('carriers', CarrierController::class);

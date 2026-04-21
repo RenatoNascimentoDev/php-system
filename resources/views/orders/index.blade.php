@@ -5,9 +5,16 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-0">Pedidos</h1>
-        <a href="{{ route('orders.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Novo Pedido
-        </a>
+
+        <div>
+            <a href="{{ route('orders.export') }}" class="btn btn-success mr-2">
+                <i class="fas fa-file-csv"></i> Download CSV
+            </a>
+
+            <a href="{{ route('orders.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Novo Pedido
+            </a>
+        </div>
     </div>
 @stop
 
