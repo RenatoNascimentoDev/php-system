@@ -104,4 +104,51 @@ class OrderController extends Controller
             ->route('orders.index')
             ->with('success', 'Pedido removido com sucesso!');
     }
+
+    public function exportCsv()
+    {
+        $fileName = 'orders_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename={$fileName}",
+        ];
+
+        $callback = function () {
+            $handle = fopen('php://output', 'w');
+
+            fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+            fputcsv($handle, [
+                'ID',
+                'Descricao',
+                'Nome do Cliente',
+                'Produto',
+                'Preco',
+                'Quantidade',
+                'Total',
+                'Criado em',
+            ], ';');
+
+            Order::query()
+                ->orderBy('id')
+                ->chunk(500, function ($orders) use ($handle) {
+                    foreach ($orders as $order) {
+                        fputcsv($handle, [
+                            $order->id,
+                            $order->description,
+                            $order->customer_name,
+                            $order->product,
+                            number_format((float) $order->price, 2, '.', ''),
+                            $order->quantity,
+                            number_format((float) $order->total, 2, '.', ''),
+                            optional($order->created_at)->format('Y-m-d H:i:s'),
+                        ], ';');
+                    }
+                });
+                fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }
