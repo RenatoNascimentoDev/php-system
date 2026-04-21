@@ -105,6 +105,10 @@ class CarrierController extends Controller
      */
     public function destroy(Carrier $carrier)
     {
-        //
+        $carrier->delete();
+
+        return redirect()
+            ->route('carriers.index')
+            ->with('success', 'Transportadora removida com sucesso!');
     }
 }

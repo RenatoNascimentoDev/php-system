@@ -5,11 +5,11 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-0">Transportadoras</h1>
-        {{-- Quando implementar create no CarrierController: --}}
+
         <a href="{{ route('carriers.create') }}" class="btn btn-primary">
-          <i class="fas fa-plus"></i> Nova transportadora
-        </a>   
-</div>
+            <i class="fas fa-plus"></i> Nova transportadora
+        </a>
+    </div>
 @stop
 
 @section('content')
@@ -36,7 +36,21 @@
                             <td>{{ $carrier->city }}</td>
                             <td>{{ $carrier->state }}</td>
                             <td class="text-right">
-                                {{-- Links quando edit/show/destroy estiverem implementados --}}
+                                <a href="{{ route('carriers.edit', $carrier) }}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <form action="{{ route('carriers.destroy', $carrier) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Deseja remover esta transportadora?')"
+                                    >
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @empty
