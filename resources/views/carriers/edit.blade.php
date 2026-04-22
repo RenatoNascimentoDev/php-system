@@ -30,7 +30,17 @@
 
                 <div class="form-group">
                     <label>CNPJ</label>
-                    <input type="text" name="cnpj" class="form-control" value="{{ old('cnpj', $carrier->cnpj) }}" required>
+                    <input
+                        type="text"
+                        name="cnpj"
+                        id="cnpj"
+                        class="form-control"
+                        value="{{ old('cnpj', $carrier->cnpj) }}"
+                        placeholder="XX.XXX.XXX/XXXX-XX"
+                        maxlength="18"
+                        autocomplete="off"
+                        required
+                    >
                 </div>
 
                 <div class="form-group">
@@ -69,7 +79,19 @@
 
                 <div class="form-group">
                     <label>Número</label>
-                    <input type="text" name="number" class="form-control" value="{{ old('number', $carrier->number) }}" required>
+                    <input
+                    type="text"
+                    name="number"
+                    id="number"
+                    class="form-control"
+                    value="{{ old('number', $carrier->number) }}"
+                    maxlength="5"
+                    inputmode="numeric"
+                    pattern="\d{1,5}"
+                    required
+                >
+
+
                 </div>
 
                 <div class="form-group">
@@ -87,6 +109,48 @@
 @section('js')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+    const cnpjInput = document.getElementById('cnpj');
+    const numberInput = document.getElementById('number');
+
+    function formatCnpj(value) {
+        const chars = value
+            .toUpperCase()
+            .replace(/[^A-Z0-9]/g, '')
+            .slice(0, 14);
+
+        let masked = chars;
+
+        if (masked.length > 2) {
+            masked = masked.slice(0, 2) + '.' + masked.slice(2);
+        }
+
+        if (masked.length > 6) {
+            masked = masked.slice(0, 6) + '.' + masked.slice(6);
+        }
+
+        if (masked.length > 10) {
+            masked = masked.slice(0, 10) + '/' + masked.slice(10);
+        }
+
+        if (masked.length > 15) {
+            masked = masked.slice(0, 15) + '-' + masked.slice(15);
+        }
+
+        return masked;
+    }
+
+    cnpjInput.value = formatCnpj(cnpjInput.value);
+
+    numberInput.addEventListener('input', () => {
+        numberInput.value = numberInput.value.replace(/\D/g, '').slice(0, 5);
+    });
+
+    cnpjInput.addEventListener('input', () => {
+        cnpjInput.value = formatCnpj(cnpjInput.value);
+    });
+
+
     const cepInput = document.getElementById('cep');
 
     cepInput.addEventListener('blur', async () => {

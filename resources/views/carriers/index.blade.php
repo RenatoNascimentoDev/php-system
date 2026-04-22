@@ -32,7 +32,15 @@
                         <tr>
                             <td>{{ $carrier->id }}</td>
                             <td>{{ $carrier->name }}</td>
-                            <td>{{ $carrier->cnpj }}</td>
+                            <td>
+                                {{
+                                    preg_replace(
+                                        '/^([A-Z0-9]{2})([A-Z0-9]{3})([A-Z0-9]{3})([A-Z0-9]{4})([0-9]{2})$/',
+                                        '$1.$2.$3/$4-$5',
+                                        $carrier->cnpj
+                                    )
+                                }}
+                            </td>
                             <td>{{ $carrier->city }}</td>
                             <td>{{ $carrier->state }}</td>
                             <td class="text-right">

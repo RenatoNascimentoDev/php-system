@@ -39,13 +39,13 @@ class CarrierController extends Controller
             'city' => ['required', 'string', 'max:255'],
             'district' => ['required', 'string', 'max:255'],
             'street' => ['required', 'string', 'max:255'],
-            'number' => ['required', 'string', 'max:20'],
+            'number' => ['required', 'string', 'regex:/^\d{1,5}$/'],
             'complement' => ['nullable', 'string', 'max:255'],
         ]);
 
-        // normaliza CEP/CNPJ (remove tudo que não é dígito) — opcional mas ajuda muito
+        // normaliza CEP e CNPJ antes de salvar
         $data['cep'] = preg_replace('/\D+/', '', $data['cep']);
-        $data['cnpj'] = preg_replace('/\D+/', '', $data['cnpj']);
+        $data['cnpj'] = strtoupper(preg_replace('/[^A-Z0-9]+/i', '', $data['cnpj']));
 
         Carrier::create($data);
 
@@ -88,11 +88,11 @@ class CarrierController extends Controller
             'city' => ['required', 'string', 'max:255'],
             'district' => ['required', 'string', 'max:255'],
             'street' => ['required', 'string', 'max:255'],
-            'number' => ['required', 'string', 'max:20'],
+            'number' => ['required', 'string', 'regex:/^\d{1,5}$/'],
             'complement' => ['nullable', 'string', 'max:255'],
         ]);
         $data['cep'] = preg_replace('/\D+/', '', $data['cep']);
-        $data['cnpj'] = preg_replace('/\D+/', '', $data['cnpj']);
+        $data['cnpj'] = strtoupper(preg_replace('/[^A-Z0-9]+/i', '', $data['cnpj']));
         $carrier->update($data);
         return redirect()
             ->route('carriers.index')
